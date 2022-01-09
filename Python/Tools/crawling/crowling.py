@@ -13,11 +13,14 @@ def crawl(keywords, number):
     # 전체화면으로 바꾸기
     driver.maximize_window()
     time.sleep(1)
-
+    
+    # 폴더생성
     os.makedirs(keywords, exist_ok=True)
+    
     counter = 0
     flag = False
     while True:
+        # 페이지 끝까지 스크롤을 내림
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
         for x in driver.find_elements_by_class_name('rg_i.Q4LuWd'):
             # 이미지 url
