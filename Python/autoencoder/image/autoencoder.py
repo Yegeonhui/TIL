@@ -1,5 +1,5 @@
 import tensorflow as tf
-from keras import Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D
+from keras.layers import Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D
 from keras.models import Model
 from keras.callbacks import ModelCheckpoint
 import numpy as np
@@ -21,7 +21,7 @@ Img_test /= 255.
 Img_val /= 255.
 
 b, h, w, c = Img_val.shape
-
+    
 # 모델 빌드
 # 인코더
 encoder_input = tf.keras.Input(shape=(h, w, c))
