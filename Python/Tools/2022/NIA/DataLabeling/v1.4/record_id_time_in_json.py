@@ -3,7 +3,6 @@ import datetime
 from PIL import Image
 import piexif
 import pickle
-from PIL.ExifTags import TAGS
 
 def changeexif(imagefile, ID):
     image = Image.open(imagefile)
@@ -20,11 +19,12 @@ def changeexif(imagefile, ID):
     exif_dat = piexif.dump(exif_dict)
     image.save(imagefile, exif=exif_dat)
 
+
 def getjson(jsonfile):
     with open(jsonfile) as Jsonfile:
         objects = json.load(Jsonfile)
-    
     return objects
+
 
 def check_id_time(objects):
     total_obj = len(objects['shapes'])
@@ -32,7 +32,6 @@ def check_id_time(objects):
         label = objects['shapes'][o]['label']
         if label == 'test':
             return True
-    
     return False 
     
 

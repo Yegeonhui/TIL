@@ -1,6 +1,6 @@
 import os 
 import shapefile
-from shapely.geometry import Polygon, Point, LineString
+from shapely.geometry import Point, LineString
 import geopandas
 from pyproj import Proj, transform
 import time
@@ -16,10 +16,10 @@ def change_coordinate(point):
     X1, Y1 = transform(wgs84, epsg32652, point[0], point[1])
     return (X1, Y1)
 
+
 def makekoreacoastline():
     # epsg32652로 바꾼 shape파일
     shape = shapefile.Reader('coast/Z_NGII_N3L_E0080000_utm.shp')
-    #shape = shapefile.Reader('coast/test1.shp')
 
     gdf = geopandas.GeoSeries([LineString([]) for i in range(len(shape))])
     for s in range(len(shape.shapeRecords())):
@@ -31,8 +31,8 @@ def makekoreacoastline():
     print(gdf)
     gdf.crs = 32652
     gdf.to_file('coastline.geojson', driver='GeoJSON')
-    
     return gdf
+
 
 def handlejson(jsonfile, option, objects=''):
     if option == 'get':

@@ -8,18 +8,15 @@ from record_id_time_in_json import record_id_time
 from integrity_check import check
 from subprocess import Popen
 import numpy as np
-import sys
 import datetime
 
 class MakeGUI():
     def getimage(self, image):
         with open(image, 'rb') as img:
-            #pysimplegui에서 이미지 사용시 encoder 에러가 뜸
             base64_string = base64.b64encode(img.read())
-        
         return base64_string
 
-    # image가 있는 경우 gui 
+
     def makegui(self):
         sg.theme('Black')
         layout = [
@@ -42,11 +39,10 @@ class MakeGUI():
                   [sg.Text('----------------------------------------------------------------------------------------------------------------------')],
                   [sg.Text('Step2. 무결성 체크'), sg.Button('Integrity Check', size=(30, 1), key='integrity'), sg.Button('Exit', size=(10, 1) )],
                   ]
-
         window = sg.Window('Data Processing', layout, grab_anywhere = True, element_justification='c')
         return window
 
-    # 이미지가 없을떄의 gui : exe 파일을 만들때 오류가 뜨는 경우가 있음.
+
     def makegui_noimage(self):
         sg.theme('Black')
         size = (18, 9)
@@ -71,24 +67,15 @@ class MakeGUI():
                   [sg.Text('Step2. 무결성 체크'), sg.Button('Integrity Check', size=(30, 1), key='integrity'), sg.Button('Exit', size=(10, 1) )],
                   ]
         window = sg.Window('Data Processing', layout, grab_anywhere = True, element_justification='c')
-
         return window
 
-# 로그인 할때 labelme가 실행. 
-# 주의. anaconda3경로가 밑과 같아야됨
+
 def runLabelme():
-    python_file = "C:/Users/admin/anaconda3/envs/labelme/pythonw.exe"
-    labelme_file = "C:/Users/admin/anaconda3/envs/labelme/Lib/site-packages/labelme/__main__.py"
+    python_file = "C:/ProgramData/Anaconda3/envs/labelme/pythonw.exe"
+    labelme_file = "C:/ProgramData/Anaconda3/envs/labelme/Lib/site-packages/labelme/__main__.py"
     if np.__version__[:4] == '1.22':
         Popen(python_file + ' ' + labelme_file)
-
-# exe파일 만들때 이미지 경로를 못찾는 경우
-try:
-    os.chdir(sys._MEIPASS)
-    print(sys._MEIPASS)
-except:
-    os.chdir(os.getcwd())
-
+        
 m = MakeGUI()
 try: #이미지 경로
     window = m.makegui()
@@ -97,8 +84,6 @@ except:
 object = ['Echinoid', 'Starfish', 'SeaHare', 'Snail', 'EckloniaCava', 'Sargassum']
 minsize = 5000
 flag = True
-
-# log파일만들때 실시간날짜로 만들어야 안겹침.
 now = datetime.datetime.now()
 date = str(now.year) + str(now.month) + str(now.day) + str(now.hour) + str(now.minute)
 
@@ -112,7 +97,6 @@ try:
             f.close()
         f = open(Path + '/' + date + '.txt', 'a')
 
-        # 이미지 클릭했을때 복붙
         if event in object:
             pyperclip.copy(event)
             f.write(event + "이미지를 클릭했습니다." + '\n')
@@ -130,13 +114,10 @@ try:
                 imagefile = Path + '/' + imagename + '.jpg'
                 
                 f.write('\n' + jpgfile + ' 메타데이터 작업하는 중' + '\n')
-                # 로그인하는 순간 1. 새로작업하는지 체크, 2. id, 시간 저장
-                # exif 에도 저장
                 record_id_time(f, imagefile, jsonfile, str(values['ID']))
                 f.write(jpgfile + ' 메타데이터 작업 끝' + '\n')
             
             f.write('\n' + 'labelme 실행중' + '\n')
-            # lablme 실행
             runLabelme()
             f.write('\n' + 'labelme 종료' + '\n')
 
@@ -146,7 +127,6 @@ try:
             for Json in jsonlist:
                 jsonfile = os.path.split(Json)[-1]
                 f.write('\n' + jsonfile + ' 무결성 체크 중' + '\n')
-                #무결성 검사
                 check(f, jsonfile, minsize, Path)
                 f.write(jsonfile + ' 무결성 체크 끝' + '\n')
             f.close()

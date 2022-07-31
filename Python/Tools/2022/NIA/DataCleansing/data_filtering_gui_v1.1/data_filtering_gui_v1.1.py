@@ -15,14 +15,13 @@ class MakeGUI():
                   [sg.Text('Input Data Type'), sg.Checkbox('mp4', key="mp4"), sg.Checkbox('jpg', key="jpg"), sg.Button('Run', size=(11, 1), key='Run')],
                   [sg.ProgressBar(1, orientation='h', size=(40,20), key='progress')]
                   ]
-
         window = sg.Window('Data filtering', layout, grab_anywhere = True).Finalize()
-        
         return window
 
-#Get waterinfo in inforamtion.xlsx
+
 def getwaterinfo(info_path):
     wb = openpyxl.load_workbook(info_path)
+
     # 수질환경정보
     ws1 = wb['Sheet1']
     water_env = {}
@@ -31,10 +30,9 @@ def getwaterinfo(info_path):
             return False, water_env
         else:
             water_env[ws1.cell(1,c).value] = ws1.cell(2,c).value
-
     return True, water_env
 
-# Get object infor in information.xlsx
+
 def getobjectinfo(info_path, imagename):
     wb = openpyxl.load_workbook(info_path) 
     ws2 = wb['Sheet2']
@@ -46,10 +44,9 @@ def getobjectinfo(info_path, imagename):
                 info.append(ws2.cell(r2, c2).value)
         if len(info) != 0:
             obj_info.append(info)
-
     return obj_info
 
-# Check waterinfo in noraml range
+
 def checkwaterinfo(water_env):
     flag_array = [True for i in range(1, 9)]
     if 0 > water_env['Temp'] or water_env['Temp'] > 40:
@@ -68,8 +65,8 @@ def checkwaterinfo(water_env):
         flag_array[6] = False
     if 0 > water_env['Depth']:
         flag_array[7] = False
-    
     return flag_array
+
 
 m = MakeGUI()
 window = m.makegui()
@@ -123,5 +120,6 @@ while True:
                 imagefiltering(image, savepath, water_env, obj_info)
                 
                 cnt += 1
+                
     if event in (None, 'Exit'):
         break

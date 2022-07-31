@@ -3,7 +3,6 @@ from jsonform import getjsonform
 import json
 import os
 
-# apply clahe
 def bgr_Contrast(img):
     b, g, r = cv2.split(img)
     clahe = cv2.createCLAHE(clipLimit=3.0,tileGridSize=(8,8))
@@ -12,14 +11,13 @@ def bgr_Contrast(img):
     clahe_r = clahe.apply(r)
     clahe_img = cv2.merge((clahe_b, clahe_g, clahe_r))
     return clahe_img
+    
 
-# Get the frame you want
 def get_frame(start, end, fps):
-    frame_array = [i for i in range(start, end, fps)]
-        
+    frame_array = [i for i in range(start, end, fps)] 
     return frame_array
 
-# Save change json
+
 def save_change_json(jsonname, imagePath, water_env, obj_info, h, w):
     objects = getjsonform()
     objects['imagePath'] = imagePath + '.jpg'
@@ -38,7 +36,7 @@ def save_change_json(jsonname, imagePath, water_env, obj_info, h, w):
     with open(jsonname + '.json', 'w') as jsonfile:
         json.dump(objects, jsonfile, indent=4)
 
-# video to jpg
+
 def videofiltering(video, interval, savepath, water_env):
     cap = cv2.VideoCapture(video)
     fps = round(cap.get(cv2.CAP_PROP_FPS))
@@ -68,7 +66,7 @@ def videofiltering(video, interval, savepath, water_env):
         if cv2.waitKey(10) == 27:
             break    
 
-# actual function
+
 def imagefiltering(image, savepath, water_env, obj_info):
     imagenamejpg = os.path.split(image)[-1]
     imagename = os.path.splitext(imagenamejpg)[0]

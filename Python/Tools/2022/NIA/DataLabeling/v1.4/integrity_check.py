@@ -3,7 +3,6 @@ import json
 import numpy as np
 import shutil
 
-
 def classname_check(f, objects):
     f.write('클래스 명 체크 중' + '\n')
     total_obj = len(objects['shapes'])
@@ -14,6 +13,7 @@ def classname_check(f, objects):
         else:
             return True
 
+
 def attribute_value(f, objects):
     f.write('속성 값 체크 중' + '\n')
     if len(objects) == 18:
@@ -22,6 +22,7 @@ def attribute_value(f, objects):
     else:
         f.write('속성 개수 : ' + str(len(objects)) + ' 개로 속성값 이상' + '\n')
         return False
+
 
 def size(f, objects, minsize):
     total_obj = len(objects['shapes'])
@@ -47,9 +48,7 @@ def size(f, objects, minsize):
         area = w * h 
         if area <= minsize:
             f.write(str(objects['shapes'][t]['label']) + ' 크기가 작아 삭제되었습니다.' + '\n')
-            del(objects['shapes'][t])   
-            
-
+            del(objects['shapes'][t])     
     return objects
     
 
@@ -61,10 +60,8 @@ def savejson(objects, jsonfile):
 def getjson(jsonfile):
     with open(jsonfile) as Jsonfile:
         objects = json.load(Jsonfile)
-
     return objects
 
-classname = ['Echinoid', 'Starfish', 'SeaHare', 'Snail', 'EckloniaCava', 'Sargassum']
 
 def check(f, jsonfile, minsize, path):
     jsonpath = path + '/' + jsonfile
@@ -79,7 +76,6 @@ def check(f, jsonfile, minsize, path):
     objects = getjson(jsonpath)
     objects = size(f, objects, minsize)
     
-     
     savejson(objects, jsonpath)
     if classname_check(f, objects):
         classes = True
@@ -89,13 +85,12 @@ def check(f, jsonfile, minsize, path):
     if attribute_value(f, objects):
         attribute = True
     else:
-        attribute = False      
-    if classes and attribute:
-       
+        attribute = False    
+
+    if classes and attribute:       
         shutil.move(jsonpath, path + '/Done/' + jsonfile)
         shutil.move(imagepath, path + '/Done/' + imagefile)
         #shutil.move(, path + '/Done/' + jsonfile)
         f.write('Done 폴더로 이동' + '\n')
-    
 
-
+classname = ['Echinoid', 'Starfish', 'SeaHare', 'Snail', 'EckloniaCava', 'Sargassum']
