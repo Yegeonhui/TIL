@@ -1,5 +1,4 @@
 # Find Non Labeling Json
-> nia사업에서 쓰인 도구
 > LW들이 라벨링 한 json파일 중에서 미라벨링 한 json파일 확인
 
 ## How to use?
