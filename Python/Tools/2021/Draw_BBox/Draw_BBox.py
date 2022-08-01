@@ -6,8 +6,8 @@ import numpy as np
 def getXml(Xml):
     Xml = ET.parse(Xml)
     xmlroot = Xml.getroot()
-    
     return xmlroot
+
 
 for idx, (root, dirs, files) in enumerate(os.walk("Image")):
     Image_list = [Img for Img in files if Img.lower().endswith(".jpg")]
@@ -30,12 +30,12 @@ for idx, (root, dirs, files) in enumerate(os.walk("Image")):
             objects = xmlroot.findall("object")
             
             for n in range(len(objects)):
-                print(xmin)
                 xmin = int(objects[n].find("bndbox").find("xmin").text)
                 xmax = int(objects[n].find("bndbox").find("xmax").text)
                 ymin = int(objects[n].find("bndbox").find("ymin").text)
                 ymax = int(objects[n].find("bndbox").find("ymax").text)
                 img = cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 3)
+                
             cv2.imshow("img", img)
             cv2.waitKey(0)
             cv2.imwrite(os.path.join("drawImage", img_name), img)
