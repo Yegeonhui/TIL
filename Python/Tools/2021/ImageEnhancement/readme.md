@@ -1,12 +1,34 @@
-# Gridmask Augmentation
-> 격자로 Augmentation을 적용하면 모델 성능 향상 발견
+# ImageEnhancement
+> 이미지 성능향상하는 코드 
 
 ## How to use?
-1. size크기의 격자를 생성
-2. cycle주기로 격자를 배열 
-3. image에 적용
+1. 사용하고자하는 필터를 option으로 설정
 
 ## install Library
 ```
 pip install opencv-python
+pip install glob2
+pip install numpy
 ```
+## Example
+- - -
+### original
+![original](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/원본.jpg)
+- - -
+### Laplacian
+![Laplacian](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/Laplacian.jpg)
+- - -
+### bgr_Contrast
+![bgr_Contrast](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/bgr_Contrast.jpg)
+- - -
+### cannyedge
+![cannyedge](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/cannyedge.jpg)
+- - -
+### lab_Contrast
+![lab_Contrast](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/lab_Contrast.jpg)
+- - -
+### sharpening
+![sharpening](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/sharpening.jpg)
+- - -
+### soblex
+![soblex](https://github.com/Yegeonhui/Code/blob/main/Python/Tools/2021/ImageEnhancement/sample_image/soblex.jpg)
