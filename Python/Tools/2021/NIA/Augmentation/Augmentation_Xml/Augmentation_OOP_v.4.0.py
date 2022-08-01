@@ -43,7 +43,7 @@ class Augmentation:
         #output 경로
         self.NewFileRoute = os.path.join(self.root, 'split', self.Image_name)
     
-    def xy_minmax(self,n):
+    def xy_minmax(self, n):
         xmin = int(self.object_tags[n].find("bndbox").findtext("xmin"))
         ymin = int(self.object_tags[n].find("bndbox").findtext("ymin"))
         xmax = int(self.object_tags[n].find("bndbox").findtext("xmax"))
