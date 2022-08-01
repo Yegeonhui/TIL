@@ -1,6 +1,5 @@
 import os
 import json 
-import numpy as np
 import shutil
 import json
 import random
@@ -8,17 +7,23 @@ import random
 def getjson(Json):
     with open(Json) as jsonFile:
         object = json.load(jsonFile)
-        
     return object
 
 
-start = 30000
-total_image = 0
-for idx, (root, dirs, files) in enumerate(os.walk("Image")):
-    ImageList = [Image for Image in files if Image.lower().endswith("jpg")]
-    total_image += len(ImageList)
+# 몇개의 이미지가 있는지 확인
+def countimage():
+    total_image = 0
+    for idx, (root, dirs, files) in enumerate(os.walk("Image")):
+        ImageList = [Image for Image in files if Image.lower().endswith("jpg")]
+        total_image += len(ImageList)
+    return total_image
 
+
+start = 30000
+total_image = countimage()
+total_image = 10
 num_array = random.sample(range(start, start + total_image), total_image)
+print(num_array)
 
 cnt = 0
 dir = 1
