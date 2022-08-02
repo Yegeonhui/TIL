@@ -1,5 +1,5 @@
-# Change_Class_name
-> 기존에 객체명을 몰라서 임의로 1,2,3,4,5,6으로 분류했던 것을 다른 이름으로 변경
+# Augmentation_Xml
+> Nia 사업간 모델학습을 위해 xml, image를 증강하는 코드
 
 ## How to use?
 1. Xml 내부에 객체가 5개 이상인 경우만 Augmentation 수행
