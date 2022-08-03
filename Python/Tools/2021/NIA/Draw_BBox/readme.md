@@ -11,4 +11,5 @@ pip install elementpath
 pip install numpy
 ```
 ## Example
-![origin](Example_image/origin.jpg) | ![draw](Example_image/draw.jpg) 
+![origin](Example_image/origin.jpg) 
+![draw](Example_image/draw.jpg) 
