@@ -14,7 +14,5 @@ pip install PySimpleGUI
 ```
 ## Example
 - - -
-### GPS가 있는 사진
-![GPS](Example_image/GPS.png)
-### GPS가 없는 사진
-![NonGPS](Example_image/NonGPS.png)
+### GPS가 있는 사진 | GPS가 없는 사진
+![GPS](Example_image/GPS.png) | ![NonGPS](Example_image/NonGPS.png)
