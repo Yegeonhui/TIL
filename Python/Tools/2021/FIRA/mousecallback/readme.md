@@ -16,4 +16,4 @@ pip install opencv-python
 ```
 
 ## Example
-![원본](Example_image/origin.PNG)|![draw](Example_image/draw.PNG)
+![원본](Example_image/origin.PNG)|![draw](Example_image/draw_image.PNG)
