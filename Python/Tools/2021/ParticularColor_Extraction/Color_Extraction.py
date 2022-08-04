@@ -1,12 +1,10 @@
 import cv2
 import os
-import numpy as np
 
 for idx, (root, dirs, files) in enumerate(os.walk('Image')):
     Image_list = [img for img in files if img.lower().endswith('.jpg')]
     for img in Image_list:
-
-        Image = cv2.imread(os.path.join(root,img))
+        Image = cv2.imread(os.path.join(root, img))
 
         height, width = Image.shape[:2]
 
