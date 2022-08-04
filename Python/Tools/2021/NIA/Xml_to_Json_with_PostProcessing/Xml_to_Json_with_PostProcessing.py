@@ -1,7 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageFilter
-from PIL.ExifTags import TAGS
 import json
 import piexif
 import shutil
@@ -9,7 +8,6 @@ import shutil
 def get_xml(Xml):
     Xml = ET.parse(Xml)
     xmlroot = Xml.getroot()
-
     return xmlroot
 
 
@@ -82,19 +80,19 @@ def make_json(xmlroot):
     file['lat'] = float(xmlroot.find("lat").text)
     file['lon'] = float(xmlroot.find("lon").text)
     file['gtype'] = xmlroot.find("gtype").text
-
-
     return file
-    
-def checkerror():
+
+
+def checkerror(xmlroot):
     global error
+    # xml파일 속성이 15개가 아닌 경우 error
     if len(xmlroot) - len(xmlroot.findall("object")) != 15:
         print("generate error")
-        shutil.move(os.path.join(root, image_name), "I:/json_to_xml/Error/" + image_name)
-        shutil.move(os.path.join(root, xml_name), "I:/json_to_xml/Error/" + xml_name)
+        shutil.move(os.path.join(root, image_name), "Error/" + image_name)
+        shutil.move(os.path.join(root, xml_name), "Error/" + xml_name)
         error = True
+        return error
 
-        return error 
 
     object = xmlroot.findall("object")
     num_object = len(object)
@@ -102,41 +100,46 @@ def checkerror():
     for n in range(num_object):
         name = object[n].find("name").text
         if name != "Blur":
+            # (11) plastic -> plastic 
             try:
                 name = name.split(")")[1]
             except:
                 print("generate error")
-                shutil.move(os.path.join(root, image_name), "I:/json_to_xml/Error/" + image_name)
-                shutil.move(os.path.join(root, xml_name), "I:/json_to_xml/Error/" + xml_name)
+                shutil.move(os.path.join(root, image_name), "Error/" + image_name)
+                shutil.move(os.path.join(root, xml_name), "Error/" + xml_name)
                 error = True
                 break
+            # 오라벨링 유무 확인
             if name not in name_list:
                 error = True
                 return error
-        
     return error
 
+
+def savejson(file):
+    with open(saveroot + "/" + image_name[:-4] + ".json", 'w') as f:
+        json.dump(file, f, indent=4)
+
     
-foldernum = 1
+foldernum = 0
 count = 0
 name_list = ['Styrofoam_Box', 'Styrofoam_Piece', 'PET_Bottle', 'Metal', 'Glass', 'Plastic_ETC', 'Styrofoam_Buoy', 'Rope', 'Plastic_Buoy', 'Plastic_Buoy_China', 'Net']
-saveroot = "I:/json_to_xml/Done/" + str(foldernum)
-os.makedirs(saveroot, exist_ok=True)
 for idx, (root, dirs, files) in enumerate(os.walk("Image")):
     Image_list = [Img for Img in files if Img.lower().endswith(".jpg")]
     Xml_list = [Xml for Xml in files if Xml.lower().endswith(".xml")]
     for i in range(len(Image_list)):
-        error = False
-        if count == 10000:
+        # 이미지가 10000개가 넘어가면 다른 폴더로 저장 
+        if count % 10000 == 0:
             foldernum += 1
-            saveroot = "I:/json_to_xml/Done/" + str(foldernum)
+            saveroot = "Done/" + str(foldernum)
             os.makedirs(saveroot, exist_ok=True)
-            count = 0
-        
+
+        error = False
         image_name = Image_list[i]
         xml_name = os.path.splitext(image_name)[0] + ".xml"
         print(image_name)
 
+        # 이미지에 맞는 xml파일이 없는 경우 error파일로 이동
         if xml_name not in Xml_list:
             shutil.move(os.path.join(root, image_name), "Error/" + image_name)
             continue
@@ -145,25 +148,27 @@ for idx, (root, dirs, files) in enumerate(os.walk("Image")):
         Xml = os.path.join(root, xml_name)
     
         xmlroot = get_xml(Xml)
-        error =  checkerror()
+
+        # 속성갯수 확인
+        error = checkerror(xmlroot)
         if error:
             continue
 
         Img = Image.open(Img)
-        
         exif = piexif.load(Img.info['exif'])
         
+        # xml to json
         file = make_json(xmlroot)
-        with open(saveroot + "/" + image_name[:-4] + ".json", 'w') as f:
-            json.dump(file, f, indent=2)
+        savejson(file)
+        
         # 썸네일 용량이 너무 크면 오류 발생 
         try:
             exif = piexif.dump(exif)
-        
         except:
             exif["Exif"][41729] = b'1'
             del exif['thumbnail']
             exif = piexif.dump(exif)
+
         Img.save(saveroot + "/" + image_name, exif=exif)
     
         count += 1
