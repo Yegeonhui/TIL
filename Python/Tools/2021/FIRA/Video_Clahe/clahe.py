@@ -11,6 +11,7 @@ def bgr_Contrast(img):
     cl_img = cv2.merge((cl_b, cl_g, cl_r))
     return cl_img
 
+
 def videocapture(video):
     videoname = video[:-4]
     cap = cv2.VideoCapture(os.path.join(root, video))
@@ -28,7 +29,6 @@ def videocapture(video):
         
         if cap.get(cv2.CAP_PROP_FRAME_COUNT) < frame :
             break 
-        
         if success == False:
             print("프레임 추출 실패!")
         else:   
@@ -42,17 +42,16 @@ def videocapture(video):
             break    
                   
     # 객체 생성
-    
-    out = cv2.VideoWriter(os.getcwd() + "/Clahe_video/" + videoname + ".mp4", cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+    out = cv2.VideoWriter("Clahe_video/" + videoname + ".mp4", cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
     
     # 프레임 불러와서 동영상 만들기 
     for idx in range(len(frame_array)):
         out.write(frame_array[idx])
     out.release()        
 
-    
+
 start = time.time()
-os.makedirs(os.getcwd() + "/Clahe_video", exist_ok = True)
+os.makedirs("Clahe_video", exist_ok = True)
 for idx, (root, dirs, files) in enumerate(os.walk("video")):
     Video_list = [video for video in files if video.lower().endswith(".mp4")]
     for video in Video_list:
