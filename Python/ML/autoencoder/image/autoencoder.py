@@ -1,7 +1,6 @@
 import tensorflow as tf
 from keras.layers import Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D
 from keras.models import Model
-from keras.callbacks import ModelCheckpoint
 import numpy as np
 import cv2
 
@@ -15,7 +14,7 @@ Img_train = np.array(Img_train, dtype='float32')
 Img_test = np.array(Img_test, dtype='float32')
 Img_val = np.array(Img_val, dtype='float32')
 
-# 정규화 작업(0~ 1)
+# 정규화 작업(0 ~ 1)
 Img_train /= 255.
 Img_test /= 255.
 Img_val /= 255.
